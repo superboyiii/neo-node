@@ -17,11 +17,11 @@
       "02ff249d06faaf0b5ba865e1531bfabe07f89aef39ab59082e3bc140be0318055d"
     ],
     "SeedList": [
-      "seed1.neo.org:21333",
-      "seed2.neo.org:21333",
-      "seed3.neo.org:21333",
-      "seed4.neo.org:21333",
-      "seed5.neo.org:21333"
+      "seed1t.neo.org:21333",
+      "seed2t.neo.org:21333",
+      "seed3t.neo.org:21333",
+      "seed4t.neo.org:21333",
+      "seed5t.neo.org:21333"
     ]
   }
 }
