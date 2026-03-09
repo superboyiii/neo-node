@@ -85,7 +85,7 @@ jobs:
       run: expect ./.github/workflows/test-neo-cli-plugins.expect
       
   Release:
-    if: github.ref == 'refs/heads/master-n3' && github.repository == 'superboyiii/neo-node'
+    if: github.ref == 'refs/heads/test-auto' && github.repository == 'superboyiii/neo-node'
     needs: Test
     runs-on: ubuntu-latest
     steps:
