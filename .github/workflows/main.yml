@@ -2,7 +2,7 @@ name: .NET Core Test and Publish
 
 on:
   push:
-    branches: [master-n3]
+    branches: [test-auto]
   pull_request:
 
 env:
@@ -85,7 +85,7 @@ jobs:
       run: expect ./.github/workflows/test-neo-cli-plugins.expect
       
   Release:
-    if: github.ref == 'refs/heads/master-n3' && github.repository == 'neo-project/neo-node'
+    if: github.ref == 'refs/heads/master-n3' && github.repository == 'superboyiii/neo-node'
     needs: Test
     runs-on: ubuntu-latest
     steps:
@@ -312,34 +312,34 @@ jobs:
           echo "Error: Failed to upload: ${failed_files[*]}"
           exit 1
         fi
-    - name: Publish core packages to NuGet
-      if: steps.check_tag.outputs.statusCode == '404'
-      run: |
-        dotnet pack -o out -c Release
-
-        # Push only non-plugin packages here (plugins handled in a separate step)
-        for pkg in out/*.nupkg; do
-          name="$(basename "$pkg")"
-          case "$name" in
-            Neo.Plugins.*) continue ;;
-          esac
-          dotnet nuget push "$pkg" -s https://api.nuget.org/v3/index.json -k "${NUGET_TOKEN}" --skip-duplicate
-        done
-      env:
-        NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
-
-    - name: Publish plugin packages to NuGet
-      if: steps.check_tag.outputs.statusCode == '404'
-      run: |
-        # Ensure plugin packages are packed (reuse existing 'out' folder to avoid rebuilding everything)
-        for csproj in plugins/*/*.csproj; do
-          dotnet pack "$csproj" -c Release -o out
-        done
-
-        # Push all Neo.Plugins.* packages to NuGet.org
-        for pkg in out/Neo.Plugins.*.nupkg; do
-          [ -f "$pkg" ] || continue
-          dotnet nuget push "$pkg" -s https://api.nuget.org/v3/index.json -k "${NUGET_TOKEN}" --skip-duplicate
-        done
-      env:
-        NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+    # - name: Publish core packages to NuGet
+    #   if: steps.check_tag.outputs.statusCode == '404'
+    #   run: |
+    #     dotnet pack -o out -c Release
+    #
+    #     # Push only non-plugin packages here (plugins handled in a separate step)
+    #     for pkg in out/*.nupkg; do
+    #       name="$(basename "$pkg")"
+    #       case "$name" in
+    #         Neo.Plugins.*) continue ;;
+    #       esac
+    #       dotnet nuget push "$pkg" -s https://api.nuget.org/v3/index.json -k "${NUGET_TOKEN}" --skip-duplicate
+    #     done
+    #   env:
+    #     NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+    #
+    # - name: Publish plugin packages to NuGet
+    #   if: steps.check_tag.outputs.statusCode == '404'
+    #   run: |
+    #     # Ensure plugin packages are packed (reuse existing 'out' folder to avoid rebuilding everything)
+    #     for csproj in plugins/*/*.csproj; do
+    #       dotnet pack "$csproj" -c Release -o out
+    #     done
+    #
+    #     # Push all Neo.Plugins.* packages to NuGet.org
+    #     for pkg in out/Neo.Plugins.*.nupkg; do
+    #       [ -f "$pkg" ] || continue
+    #       dotnet nuget push "$pkg" -s https://api.nuget.org/v3/index.json -k "${NUGET_TOKEN}" --skip-duplicate
+    #     done
+    #   env:
+    #     NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
