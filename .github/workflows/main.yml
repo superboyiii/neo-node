@@ -95,7 +95,7 @@ jobs:
         expect ./.github/workflows/test-neo-cli-plugins.expect "$expected_count"
       
   Release:
-    if: github.ref == 'refs/heads/test-workflow-release' && github.repository == 'neo-project/neo-node'
+    if: github.ref == 'refs/heads/test-workflow-release' && github.repository == 'superboyiii/neo-node'
     needs: Test
     runs-on: ubuntu-latest
     steps:
